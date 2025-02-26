@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>赛博涂鸦乐园 - tangyouzhen.xyz</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        #info {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-family: Arial, sans-serif;
+            background: rgba(0,0,0,0.5);
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="info">点击拖动：画画 | 空格：清屏 | 回车：随机颜色</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js"></script>
+    <script>
+        let currentColor;
+
+        function setup() {
+            createCanvas(windowWidth, windowHeight);
+            currentColor = color(random(255), random(255), random(255));
+            background(0);
+        }
+
+        function draw() {
+            if (mouseIsPressed) {
+                noStroke();
+                fill(currentColor);
+                // 随机形状：圆、方、三角
+                let shape = floor(random(3));
+                let size = random(20, 50);
+                if (shape === 0) {
+                    ellipse(mouseX, mouseY, size, size);
+                } else if (shape === 1) {
+                    rect(mouseX, mouseY, size, size);
+                } else {
+                    triangle(
+                        mouseX, mouseY,
+                        mouseX + size, mouseY,
+                        mouseX, mouseY + size
+                    );
+                }
+            }
+        }
+
+        function keyPressed() {
+            if (key === ' ') { // 清屏
+                background(0);
+            } else if (keyCode === ENTER) { // 随机颜色
+                currentColor = color(random(255), random(255), random(255));
+            }
+        }
+
+        function windowResized() { // 窗口自适应
+            resizeCanvas(windowWidth, windowHeight);
+        }
+    </script>
+</body>
+</html>
